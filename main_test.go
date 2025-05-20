@@ -150,7 +150,8 @@ func newHTTPServer(t *testing.T, tlsConfig *tls.Config) *httpServer {
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte("OK"))
 		}),
-		TLSConfig: tlsConfig,
+		TLSConfig:         tlsConfig,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	var ln net.Listener
