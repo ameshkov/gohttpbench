@@ -311,12 +311,10 @@ func runConnection(options *Options, state *runState) {
 	// Ignoring the error here since upstream address was already verified.
 	client := &http.Client{
 		Timeout: time.Duration(options.Timeout) * time.Second,
-	}
-
-	if options.InsecureSkipVerify {
-		client.Transport = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
+		Transport: &http.Transport{
+			MaxConnsPerHost: 1,
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: options.InsecureSkipVerify},
+		},
 	}
 
 	defer client.CloseIdleConnections()
